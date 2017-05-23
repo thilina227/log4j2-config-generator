@@ -1,8 +1,25 @@
 import React from 'react';
-//import CodeMirror from 'react-codemirror';
+import CodeMirror from 'react-codemirror';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
+import updateCode from '../actions/codeUpdate.js'
 
-export default class MainLayout extends React.Component {
+class MainLayout extends React.Component{
+  
+  	options = {lineNumbers : true}
+
+
+	code = "test";
+
+	componentWillMount() {
+		this.props.updateCode(this.code);
+	}
+
+	updateCode(code) {
+		this.props.updateCode(code);
+	}
+
     render() {
         return (
             <Grid>
@@ -12,14 +29,27 @@ export default class MainLayout extends React.Component {
 					</Row>
 					<Row>
 						<Col xs={12} md={8}>
-							configs output
+							<CodeMirror value={this.props.codeState.code} options={this.options} />
 						</Col>
 						<Col xs={6} md={4}>
 							input control stuff
 						</Col>
 					</Row>
 			    </Row>
+			    <Row><input type={"button"} value={"Click to update"} onClick={()=>this.updateCode(this.code)}/></Row>
             </Grid>
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+      codeState: state.codeState
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({updateCode: updateCode}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(MainLayout);

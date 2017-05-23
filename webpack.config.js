@@ -25,17 +25,21 @@ var config = {
     },
     module: {
         preLoaders: [
-            {
-                test: /\.js(x)?$/,
-                loader: 'eslint',
-                exclude: nodeModulesPath
-            }
+            // {
+            //     test: /\.js(x)?$/,
+            //     loader: 'eslint',
+            //     exclude: nodeModulesPath
+            // }
         ],
         loaders: [
             {
                 test: /\.js(x)?$/,
                 loader: 'babel',
-                exclude: nodeModulesPath
+                exclude: nodeModulesPath,
+                query: {
+                    presets: ['react', 'es2015', 'stage-0'],
+                    plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties'],
+                }
             },
             {
                 test: /\.(css|scss)$/,
